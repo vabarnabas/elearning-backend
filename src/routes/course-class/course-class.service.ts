@@ -43,6 +43,16 @@ export default class CourseClassService {
       NotFoundError()
     }
 
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!user) {
+      NotFoundError()
+    }
+
+    if (user.completedClassIds.includes(id)) {
+      return user
+    }
+
     return await prisma.user.update({
       where: { id: userId },
       data: { completedClassIds: { push: id } },
@@ -60,7 +70,11 @@ export default class CourseClassService {
       NotFoundError()
     }
 
-    const user = prisma.user.findUnique({ where: { id: userId } })
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!user) {
+      NotFoundError()
+    }
 
     return await prisma.user.update({
       where: { id: userId },
