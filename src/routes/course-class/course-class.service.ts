@@ -49,6 +49,29 @@ export default class CourseClassService {
     })
   }
 
+  static async incomplete(id: string, userId: string) {
+    const courseClass = await prisma.courseClass.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!courseClass) {
+      NotFoundError()
+    }
+
+    const user = prisma.user.findUnique({ where: { id: userId } })
+
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        completedClassIds: (await user).completedClassIds.filter(
+          (classId) => classId !== id,
+        ),
+      },
+    })
+  }
+
   static async update(id: string, dto: UpdateCourseClassDto) {
     const courseClass = await prisma.courseClass.findUnique({
       where: {

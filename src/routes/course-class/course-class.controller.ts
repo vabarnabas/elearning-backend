@@ -50,6 +50,18 @@ router.post("/complete/:id", authenticate, async (req, res, next) => {
   }
 })
 
+router.post("/incomplete/:id", authenticate, async (req, res, next) => {
+  const { id } = req.params
+  const tokenUser = req["user"]
+
+  try {
+    const response = await CourseClassService.complete(id, tokenUser.id)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+})
+
 router.patch("/:id", async (req, res, next) => {
   const { id } = req.params
   const dto = req.body as UpdateCourseClassDto
