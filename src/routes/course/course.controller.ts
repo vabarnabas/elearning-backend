@@ -37,6 +37,28 @@ router.post("/", async (req, res, next) => {
   }
 })
 
+router.patch("/:id/class/add/:classId", async (req, res, next) => {
+  const { id, classId } = req.params
+
+  try {
+    const response = await CourseService.addClass(id, classId)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+})
+
+router.patch("/:id/class/remove/:classId", async (req, res, next) => {
+  const { id, classId } = req.params
+
+  try {
+    const response = await CourseService.removeClass(id, classId)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+})
+
 router.patch("/:id", async (req, res, next) => {
   const { id } = req.params
   const dto = req.body as UpdateCourseDto

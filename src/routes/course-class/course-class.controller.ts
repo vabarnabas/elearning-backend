@@ -1,5 +1,6 @@
 import { Router } from "express"
 
+import authenticate from "../../middleware/auth/auth.middleware"
 import { CreateCourseClassDto } from "../../types/dto/course-class/create-course-class.dto"
 import { UpdateCourseClassDto } from "../../types/dto/course-class/update-course-class.dto"
 import CourseClassService from "./course-class.service"
@@ -31,6 +32,18 @@ router.post("/", async (req, res, next) => {
 
   try {
     const response = await CourseClassService.create(dto)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+})
+
+router.post("/complete/:id", authenticate, async (req, res, next) => {
+  const { id } = req.params
+  const tokenUser = req["user"]
+
+  try {
+    const response = await CourseClassService.complete(id, tokenUser.id)
     return res.status(200).json(response)
   } catch (e) {
     next(e)

@@ -68,6 +68,47 @@ export default class CourseService {
     })
   }
 
+  static async addClass(id: string, classId: string) {
+    const course = await prisma.course.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!course) {
+      NotFoundError()
+    }
+
+    if (course.classIds.includes(classId)) {
+      return course
+    }
+
+    return await prisma.course.update({
+      where: { id: course.id },
+      data: { ...course, classIds: [...course.classIds, classId] },
+    })
+  }
+
+  static async removeClass(id: string, classId: string) {
+    const course = await prisma.course.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!course) {
+      NotFoundError()
+    }
+
+    return await prisma.course.update({
+      where: { id: course.id },
+      data: {
+        ...course,
+        classIds: course.classIds.filter((id) => id !== classId),
+      },
+    })
+  }
+
   static async delete(id: string) {
     const course = await prisma.course.findUnique({
       where: {

@@ -32,6 +32,23 @@ export default class CourseClassService {
     return await prisma.courseClass.create({ data: dto })
   }
 
+  static async complete(id: string, userId: string) {
+    const courseClass = await prisma.courseClass.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!courseClass) {
+      NotFoundError()
+    }
+
+    return await prisma.user.update({
+      where: { id: userId },
+      data: { completedClassIds: { push: id } },
+    })
+  }
+
   static async update(id: string, dto: UpdateCourseClassDto) {
     const courseClass = await prisma.courseClass.findUnique({
       where: {
