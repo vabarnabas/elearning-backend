@@ -55,7 +55,7 @@ router.post("/incomplete/:id", authenticate, async (req, res, next) => {
   const tokenUser = req["user"]
 
   try {
-    const response = await CourseClassService.complete(id, tokenUser.id)
+    const response = await CourseClassService.incomplete(id, tokenUser.id)
     return res.status(200).json(response)
   } catch (e) {
     next(e)
