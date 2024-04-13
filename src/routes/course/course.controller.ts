@@ -1,5 +1,6 @@
 import { Router } from "express"
 
+import authenticate from "../../middleware/auth/auth.middleware"
 import { CreateCourseDto } from "../../types/dto/course/create-course.dto"
 import { UpdateCourseDto } from "../../types/dto/course/update-course.dto"
 import CourseService from "./course.service"
@@ -31,6 +32,19 @@ router.post("/", async (req, res, next) => {
 
   try {
     const response = await CourseService.create(dto)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+})
+
+router.patch("/:id/add/owned", authenticate, async (req, res, next) => {
+  const { id } = req.params
+  console.log(id)
+  const tokenUser = req["user"]
+
+  try {
+    const response = await CourseService.addCourseToOwned(id, tokenUser.id)
     return res.status(200).json(response)
   } catch (e) {
     next(e)

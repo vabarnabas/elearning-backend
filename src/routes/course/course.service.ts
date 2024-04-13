@@ -68,6 +68,35 @@ export default class CourseService {
     })
   }
 
+  static async addCourseToOwned(id: string, userId: string) {
+    const course = await prisma.course.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!course) {
+      NotFoundError()
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!user) {
+      NotFoundError()
+    }
+
+    if (user.ownedCourseIds.includes(id)) {
+      return course
+    }
+
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ownedCourseIds: { push: id },
+      },
+    })
+  }
+
   static async addClass(id: string, classId: string) {
     const course = await prisma.course.findUnique({
       where: {
