@@ -6,7 +6,7 @@ export interface CreateCourseDto {
   cost: number
   isAvailable: boolean
   imageUrl: string
-  iconUrls: string[]
   classIds: string[]
   creatorId: string
+  categories: string[]
 }

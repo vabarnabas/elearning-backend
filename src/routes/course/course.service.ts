@@ -39,11 +39,11 @@ export default class CourseService {
       dto.cost === undefined ||
       !dto.description ||
       !dto.shortDescription ||
-      !dto.iconUrls ||
       !dto.imageUrl ||
       dto.isAvailable === undefined ||
       !dto.slug ||
-      !dto.creatorId
+      !dto.creatorId ||
+      !dto.categories
     ) {
       BadRequestError()
     }

@@ -25,7 +25,7 @@ export default class CourseClassService {
   }
 
   static async create(dto: CreateCourseClassDto) {
-    if (!dto.displayName || !dto.slug || !dto.embedId) {
+    if (!dto.displayName || !dto.slug || !dto.url || !dto.categories) {
       BadRequestError()
     }
 

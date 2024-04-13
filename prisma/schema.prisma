@@ -35,14 +35,16 @@ model Course {
   cost             Int
   isAvailable      Boolean  @default(false)
   imageUrl         String
-  iconUrls         String[]
   classIds         String[]
+  categories       String[]
 }
 
 model CourseClass {
-  id          String  @id @default(uuid())
-  slug        String  @unique
+  id          String   @id @default(uuid())
+  slug        String   @unique
   displayName String
   description String?
-  embedId     String
+  type        String   @default("video")
+  url         String
+  categories  String[]
 }
