@@ -35,17 +35,10 @@ router.post("/login", async (req, res, next) => {
 })
 
 router.post("/register", authenticate, async (req, res, next) => {
-  const { displayName, email, password, userName, isAdmin } =
-    req.body as RegisterDto
+  const dto = req.body as RegisterDto
 
   try {
-    const response = await AuthService.register({
-      displayName,
-      email,
-      password,
-      userName,
-      isAdmin,
-    })
+    const response = await AuthService.register(dto)
     return res.status(200).json(response)
   } catch (e) {
     next(e)
